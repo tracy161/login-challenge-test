@@ -4,5 +4,6 @@ export const APP_ACTIONS = {
 
 export const SESSION_ACTIONS = {
   LOGOUT: 'LOGOUT',
+  LOGIN: 'LOGIN',
   SET_USER_DETAILS: 'SET_USER_DETAILS'
 };
