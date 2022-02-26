@@ -51,7 +51,7 @@ function AppToolbar({ isLoggedIn, onLogin, onLogout }) {
               aria-haspopup='true'
               color='inherit'
               onClick={handleClickUserMenu}
-              innerRef={userIconRef}
+              innerref={userIconRef}
               size="large">
               <AccountCircle />
             </IconButton>

@@ -3,7 +3,7 @@ import {
   connectRouter,
   routerMiddleware
 } from 'connected-react-router/immutable';
-
+import thunk from 'redux-thunk';
 import { Map } from 'immutable';
 
 import { combineReducers } from 'redux-immutable';
@@ -17,11 +17,13 @@ export default function configureStore(history) {
     ...reducers
   });
 
+  const middleware = [thunk, routerMiddleware(history)] 
+
   return createStore(
     rootReducer,
     initialState,
     compose(
-      applyMiddleware(routerMiddleware(history)),
+      applyMiddleware(...middleware),
       window.__REDUX_DEVTOOLS_EXTENSION__
         ? window.__REDUX_DEVTOOLS_EXTENSION__()
         : f => f

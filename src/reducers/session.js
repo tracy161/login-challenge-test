@@ -10,6 +10,7 @@ const initialState = Map({
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case SESSION_ACTIONS.LOGOUT:
+    case SESSION_ACTIONS.LOGIN_FAIL:
       return state.merge({ fullname: null, username: null });
     case SESSION_ACTIONS.SET_USER_DETAILS:
       const { username, fullname } = action.payload;

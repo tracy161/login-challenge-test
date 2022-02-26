@@ -3,7 +3,8 @@ export const APP_ACTIONS = {
 };
 
 export const SESSION_ACTIONS = {
+  SET_ALERT: 'SET_ALERT',
   LOGOUT: 'LOGOUT',
-  LOGIN: 'LOGIN',
+  LOGIN_FAIL: 'LOGIN_FAIL',
   SET_USER_DETAILS: 'SET_USER_DETAILS'
 };

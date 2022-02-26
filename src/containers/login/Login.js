@@ -8,11 +8,23 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
+import { bool } from 'prop-types';
 import { connect } from 'react-redux';
-import { SESSION_ACTIONS } from '../../actions/types';
-import { push } from 'connected-react-router';
+import { login } from '../../actions/session';
 
-const LogIn = ({ push, setUserDetails }) => {
+
+const LogIn = ({ login, isLoggedIn }) => {
+  // const validate = values => {
+  //   const errors = {};
+  //   const requiredFields = ['username', 'password'];
+  //   requiredFields.forEach(field => {
+  //     if (!values[field]) {
+  //       errors[field] = 'Required';
+  //     }
+  //   });
+  //   return errors;
+  // };
+
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -25,13 +37,7 @@ const LogIn = ({ push, setUserDetails }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      username: data.get('email'),
-      password: data.get('password'),
-    });
-    setUserDetails(username)
+    login(username, password);
   };
 
   return (
@@ -94,18 +100,20 @@ const LogIn = ({ push, setUserDetails }) => {
             </Button>
           </Box>
         </Box>
+        
       </Container>
     </>
   );
 };
 
-const mapStateToProps = state => ({});
+LogIn.propTypes = {
+  isLoggedIn: bool.isRequired,
+};
 
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
   return {
-    setUserDetails: () => dispatch(SESSION_ACTIONS.SET_USER_DETAILS),
-    push: path => dispatch(push(path)),
+    isLoggedIn: !!state.getIn(['session', 'username']),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LogIn);
+export default connect(mapStateToProps, { login })(LogIn);

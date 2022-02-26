@@ -1,5 +1,5 @@
 const express = require('express');
-const { check, validationResult } = require('express-validator');
+//const { check, validationResult } = require('express-validator');
 const app = express();
 const port = 3001;
 
@@ -24,33 +24,25 @@ function login(postParams) {
   return null;
 }
 
-app.post(
-  '/api/login',
-  check('username', 'Username is required').exists(),
-  check('password', 'Password is required').exists(),
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+app.post('/api/login', (req, res) => {
 
-    const userDetails = login(req.body);
+  const userDetails = login(req.body);
 
-    try {
-      if (userDetails && (await userDetails.matchPassword(password))) {
-        res.status(200).type('application/json').send(userDetails);
-      } else {
-        res.status(401).type('application/json').send({
-          status: 'error',
-          message: 'incorrect username or password.',
-        });
-      }
-    } catch (err) {
-      console.log(err.message);
-      res.status(500).send('Server error');
+  try {
+    if (userDetails) {
+      res.status(200).type('application/json').send(userDetails);
+      //console.log('Login');
+    } else {
+      res.status(401).type('application/json').send({
+        status: 'error',
+        message: 'incorrect username or password.',
+      });
     }
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send('Server Error');
   }
-);
+});
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
