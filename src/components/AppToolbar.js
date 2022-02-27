@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { bool, func } from 'prop-types';
 import makeStyles from '@mui/styles/makeStyles';
 import AppBar from '@mui/material/AppBar';
@@ -21,15 +21,20 @@ const useStyles = makeStyles((theme) => ({
 
 const AppToolbar = ({ isLoggedIn, onLogin, onLogout }) =>{
   const userIconRef = useRef(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const classes = useStyles();
 
-  const handleClickUserMenu = () => {
+  const handleClickUserMenu = (e) => {
+    e.preventDefault();
     setUserMenuOpen(true);
+    setAnchorEl(e.currentTarget);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (e) => {
+    e.preventDefault();
     setUserMenuOpen(false);
+    setAnchorEl(null);
   };
 
   return (
@@ -56,13 +61,12 @@ const AppToolbar = ({ isLoggedIn, onLogin, onLogout }) =>{
               <AccountCircle />
             </IconButton>
             <Menu
-              anchorEl={userIconRef.current}
+              anchorEl={anchorEl}
               anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'right'
               }}
               aria-label='user menu'
-              getContentAnchorEl={null}
               id='user-menu'
               onClose={handleCloseUserMenu}
               open={userMenuOpen}

@@ -17,7 +17,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const LogIn = ({ login, isLoggedInFailed, clearUser }) => {
+export const LogIn = ({ login, clearUser, isLoggedInFailed }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -43,19 +43,18 @@ const LogIn = ({ login, isLoggedInFailed, clearUser }) => {
     if (username === '') {
       setFormDataUserError({
         error: true,
-        dataError: '* This field is required',
+        dataError: '* Username is required',
       });
     }
     if (password === '') {
       setFormDataPassError({
         error: true,
-        dataError: '* This field is required',
+        dataError: '* Password is required',
       });
     }
 
     if (username && password) {
       login(username, password);
-      console.log(username, password);
     }
   };
 
@@ -96,12 +95,14 @@ const LogIn = ({ login, isLoggedInFailed, clearUser }) => {
               fullWidth
               id="username"
               label="Username"
+              aria-label="username"
               name="username"
               autoComplete="username"
               autoFocus
               onChange={e => onChange(e)}
               error={formDataUserError.error}
               helperText={formDataUserError.dataError}
+              inputProps={{ 'aria-label': 'Username' }}
             />
             <TextField
               margin="normal"
@@ -109,16 +110,25 @@ const LogIn = ({ login, isLoggedInFailed, clearUser }) => {
               fullWidth
               name="password"
               label="Password"
+              aria-label="password"
               type="password"
               id="password"
               autoComplete="current-password"
               onChange={e => onChange(e)}
               error={formDataPassError.error}
               helperText={formDataPassError.dataError}
+              InputLabelProps={{ shrink: true }}
+              inputProps={{ 'data-testid': 'user-password' }}
             />
 
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
-              Log In
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3 }}
+              aria-label="button"
+            >
+              Log in
             </Button>
             <Button
               type="submit"
@@ -131,7 +141,7 @@ const LogIn = ({ login, isLoggedInFailed, clearUser }) => {
             </Button>
           </Box>
         </Box>
-        <div style={{display: 'flex', justifyContent: 'center'}}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           {isLoggedInFailed === false && (
             <Alert severity="error" style={styleAlert}>
               Login Failure!
@@ -152,8 +162,8 @@ const styleAlert = {
 
 LogIn.propTypes = {
   isLoggedInFailed: bool,
-  login: func.isRequired,
-  clearUser: func.isRequired,
+  login: func,
+  clearUser: func,
 };
 
 const mapStateToProps = state => {

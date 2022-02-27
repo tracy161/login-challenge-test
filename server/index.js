@@ -31,7 +31,6 @@ app.post('/api/login', (req, res) => {
   try {
     if (userDetails) {
       res.status(200).type('application/json').send(userDetails);
-      //console.log('Login');
     } else {
       res.status(401).type('application/json').send({
         status: 'error',

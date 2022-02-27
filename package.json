@@ -30,6 +30,7 @@
     "redux": "4.1.0",
     "redux-actions": "2.6.5",
     "redux-immutable": "4.0.0",
+    "redux-mock-store": "^1.5.4",
     "redux-thunk": "^2.4.1"
   },
   "scripts": {

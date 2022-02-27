@@ -10,12 +10,11 @@ export const login = (username, password) => async dispatch => {
   const body = JSON.stringify({ username, password });
   try {
     const res = await axios.post('/api/login', body, config);
-    console.log('login');
-    dispatch({
+    await dispatch({
       type: SESSION_ACTIONS.SET_USER_DETAILS,
       payload: res.data,
     });
-    dispatch(push('/'));
+    await dispatch(push('/'));
   } catch (err) {
     dispatch({
       type: SESSION_ACTIONS.LOGIN_FAIL,

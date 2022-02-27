@@ -10,7 +10,7 @@ function Routes({ history }) {
     <ConnectedRouter history={history}>
       <Switch>
         <Route exact path='/' component={Main} />
-        <Route exact path='/login' component={LogIn} />
+        <Route path='/login' component={LogIn} />
       </Switch>
     </ConnectedRouter>
   );
