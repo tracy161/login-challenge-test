@@ -7,27 +7,30 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import MuiAlert from '@mui/material/Alert';
 
-import { bool } from 'prop-types';
+import { bool, func } from 'prop-types';
 import { connect } from 'react-redux';
-import { login } from '../../actions/session';
+import { login, clearUser } from '../../actions/session';
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
-const LogIn = ({ login, isLoggedIn }) => {
-  // const validate = values => {
-  //   const errors = {};
-  //   const requiredFields = ['username', 'password'];
-  //   requiredFields.forEach(field => {
-  //     if (!values[field]) {
-  //       errors[field] = 'Required';
-  //     }
-  //   });
-  //   return errors;
-  // };
-
+const LogIn = ({ login, isLoggedInFailed, clearUser }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
+  });
+
+  const [formDataUserError, setFormDataUserError] = useState({
+    error: false,
+    dataError: '',
+  });
+
+  const [formDataPassError, setFormDataPassError] = useState({
+    error: false,
+    dataError: '',
   });
 
   const { username, password } = formData;
@@ -37,7 +40,29 @@ const LogIn = ({ login, isLoggedIn }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    login(username, password);
+    if (username === '') {
+      setFormDataUserError({
+        error: true,
+        dataError: '* This field is required',
+      });
+    }
+    if (password === '') {
+      setFormDataPassError({
+        error: true,
+        dataError: '* This field is required',
+      });
+    }
+
+    if (username && password) {
+      login(username, password);
+      console.log(username, password);
+    }
+  };
+
+  const clearInput = e => {
+    e.preventDefault();
+    document.getElementById('login-form').reset();
+    clearUser();
   };
 
   return (
@@ -63,6 +88,7 @@ const LogIn = ({ login, isLoggedIn }) => {
             onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
+            id="login-form"
           >
             <TextField
               margin="normal"
@@ -74,6 +100,8 @@ const LogIn = ({ login, isLoggedIn }) => {
               autoComplete="username"
               autoFocus
               onChange={e => onChange(e)}
+              error={formDataUserError.error}
+              helperText={formDataUserError.dataError}
             />
             <TextField
               margin="normal"
@@ -85,6 +113,8 @@ const LogIn = ({ login, isLoggedIn }) => {
               id="password"
               autoComplete="current-password"
               onChange={e => onChange(e)}
+              error={formDataPassError.error}
+              helperText={formDataPassError.dataError}
             />
 
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
@@ -95,25 +125,41 @@ const LogIn = ({ login, isLoggedIn }) => {
               fullWidth
               variant="outlined"
               sx={{ mt: 3, mb: 2 }}
+              onClick={e => clearInput(e)}
             >
               Reset
             </Button>
           </Box>
         </Box>
-        
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+          {isLoggedInFailed === false && (
+            <Alert severity="error" style={styleAlert}>
+              Login Failure!
+            </Alert>
+          )}
+        </div>
       </Container>
     </>
   );
 };
 
+const styleAlert = {
+  bottom: '20px',
+  position: 'fixed',
+  width: '23rem',
+  justifyContent: 'center',
+};
+
 LogIn.propTypes = {
-  isLoggedIn: bool.isRequired,
+  isLoggedInFailed: bool,
+  login: func.isRequired,
+  clearUser: func.isRequired,
 };
 
 const mapStateToProps = state => {
   return {
-    isLoggedIn: !!state.getIn(['session', 'username']),
+    isLoggedInFailed: state.getIn(['session', 'isAuthenticated']),
   };
 };
 
-export default connect(mapStateToProps, { login })(LogIn);
+export default connect(mapStateToProps, { login, clearUser })(LogIn);

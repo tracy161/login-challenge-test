@@ -1,10 +1,11 @@
 import React from 'react';
+import MuiAlert from '@mui/material/Alert';
+import Container from '@mui/material/Container';
+
 import { bool, func } from 'prop-types';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
-import { SESSION_ACTIONS } from '../actions/types';
-import MuiAlert from '@mui/material/Alert';
-
+import { logout } from '../actions/session';
 import AppToolbar from '../components/AppToolbar';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -16,20 +17,35 @@ const Main = ({ isLoggedIn, logout, push }) => {
     push('/login');
   };
 
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <>
       <AppToolbar
         isLoggedIn={isLoggedIn}
         onLogin={handleLogin}
-        onLogout={logout}
+        onLogout={handleLogout}
       />
-      {isLoggedIn && (
-        <Alert severity="success" style={{ bottom: '0' }}>
-          Success!
-        </Alert>
-      )}
+      <Container component="main" maxWidth="xs">
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          {isLoggedIn && (
+            <Alert severity="success" style={styleAlert}>
+              Login Success!
+            </Alert>
+          )}
+        </div>
+      </Container>
     </>
   );
+};
+
+const styleAlert = {
+  bottom: '20px',
+  width: '20rem',
+  position: 'fixed',
+  justifyContent: 'center',
 };
 
 Main.propTypes = {
@@ -44,11 +60,4 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    logout: () => dispatch(SESSION_ACTIONS.LOGOUT),
-    push: path => dispatch(push(path)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, { logout, push })(Main);

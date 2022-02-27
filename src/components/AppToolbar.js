@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function AppToolbar({ isLoggedIn, onLogin, onLogout }) {
+const AppToolbar = ({ isLoggedIn, onLogin, onLogout }) =>{
   const userIconRef = useRef(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const classes = useStyles();
