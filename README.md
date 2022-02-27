@@ -88,6 +88,8 @@ When done, send the code back to us as a ZIP archive.
 - React App built by Function Component and React Hooks
 - Use a `react-router` path of `/login`. Button `login` was linked to `/login` page in the Main Home page.
 - Please use hardcode username and password to login
+   **username:** _testuser_
+   **password:** _password_
 - The Login screen contained:
   - A heading of "Please log in below"
   - Username and Password labels and fields
