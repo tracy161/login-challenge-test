@@ -62,6 +62,18 @@ export const LogIn = ({ login, clearUser, isLoggedInFailed }) => {
     e.preventDefault();
     document.getElementById('login-form').reset();
     clearUser();
+    setFormData({
+      username: '',
+      password: '',
+    });
+    setFormDataUserError({
+      error: false,
+      dataError: '',
+    });
+    setFormDataPassError({
+      error: false,
+      dataError: '',
+    });
   };
 
   return (
@@ -102,7 +114,6 @@ export const LogIn = ({ login, clearUser, isLoggedInFailed }) => {
               onChange={e => onChange(e)}
               error={formDataUserError.error}
               helperText={formDataUserError.dataError}
-              inputProps={{ 'aria-label': 'Username' }}
             />
             <TextField
               margin="normal"
@@ -118,7 +129,6 @@ export const LogIn = ({ login, clearUser, isLoggedInFailed }) => {
               error={formDataPassError.error}
               helperText={formDataPassError.dataError}
               InputLabelProps={{ shrink: true }}
-              inputProps={{ 'data-testid': 'user-password' }}
             />
 
             <Button
