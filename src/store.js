@@ -4,7 +4,7 @@ import {
   routerMiddleware
 } from 'connected-react-router/immutable';
 import thunk from 'redux-thunk';
-import { Map } from 'immutable';
+import { Map } from 'immutable'; // immutable JS to create new object
 
 import { combineReducers } from 'redux-immutable';
 

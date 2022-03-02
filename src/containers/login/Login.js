@@ -13,6 +13,7 @@ import { bool, func } from 'prop-types';
 import { connect } from 'react-redux';
 import { login, clearUser } from '../../actions/session';
 
+// A component in the middle doesn't have to pass the theme down explicitly anymore
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -152,7 +153,7 @@ export const LogIn = ({ login, clearUser, isLoggedInFailed }) => {
           </Box>
         </Box>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          {isLoggedInFailed === false && (
+          {isLoggedInFailed === false && ( // render a component 
             <Alert severity="error" style={styleAlert}>
               Login Failure!
             </Alert>
@@ -178,7 +179,7 @@ LogIn.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    isLoggedInFailed: state.getIn(['session', 'isAuthenticated']),
+    isLoggedInFailed: state.getIn(['session', 'isAuthenticated']), // getIn() in Immutable JS: avoid the null value error
   };
 };
 

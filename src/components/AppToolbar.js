@@ -50,6 +50,7 @@ const AppToolbar = ({ isLoggedIn, onLogin, onLogout }) =>{
         </Typography>
         {isLoggedIn ? (
           <>
+          {/* Asign a contextType to read the current theme context, React will find the theme Provider above and use its value*/}
             <IconButton
               aria-label='user icon'
               aria-controls='user-menu'
